@@ -1,4 +1,7 @@
 
+/*
+* Instruments used in the MusicPlayerExample
+*/
 (
 SynthDef.new("sine", {
 	arg dur = 1, freq = 440, pan = 0, attack = 0.01, amp = 1;
