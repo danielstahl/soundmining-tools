@@ -81,13 +81,13 @@ class MusicPlayerExample extends FunSuite {
     val player = MusicPlayer()
     player.startPlay()
 
-    player.sendNew(0,
+    player.sendNewSingle(0,
       SineInstrument(freq = 440f, dur = 1f, attack = 0.1f, amp = 0.5f).build())
-    player.sendNew(absoluteTimeToMillis(1),
+    player.sendNewSingle(absoluteTimeToMillis(1),
       TriangleInstrument(freq = 4660f, dur = 0.01f, attack = 0.001f).build())
-    player.sendNew(absoluteTimeToMillis(2),
+    player.sendNewSingle(absoluteTimeToMillis(2),
       TriangleInstrument(freq = 500f, dur = 3f, attack = 1.5f, amp = 0.1f).build())
-    player.sendNew(absoluteTimeToMillis(3),
+    player.sendNewSingle(absoluteTimeToMillis(3),
       PulseInstrument(freq = 4f, dur = 5f, attack = 2.5f, amp = 0.1f).build())
 
     Thread.sleep(1000)
@@ -101,7 +101,7 @@ class MusicPlayerExample extends FunSuite {
     player.startPlay()
 
     (0 until harmonicSpectrum.size).foreach {
-      i => player.sendNew(absoluteTimeToMillis(i * 0.1f),
+      i => player.sendNewSingle(absoluteTimeToMillis(i * 0.1f),
         SineInstrument(
           freq = harmonicSpectrum(i),
           dur = 1f,
@@ -119,7 +119,7 @@ class MusicPlayerExample extends FunSuite {
     player.startPlay()
 
     (0 until nonHarmonicSpectrum.size).foreach {
-      i => player.sendNew(absoluteTimeToMillis(i * 0.1f),
+      i => player.sendNewSingle(absoluteTimeToMillis(i * 0.1f),
         SineInstrument(
           freq = nonHarmonicSpectrum(i),
           dur = 1f,
@@ -136,7 +136,7 @@ class MusicPlayerExample extends FunSuite {
     player.startPlay()
 
     (0 until invertedSpectrum.size).foreach {
-      i => player.sendNew(absoluteTimeToMillis(i * 0.1f),
+      i => player.sendNewSingle(absoluteTimeToMillis(i * 0.1f),
         SineInstrument(
           freq = invertedSpectrum(i),
           dur = 1f,
@@ -158,7 +158,7 @@ class MusicPlayerExample extends FunSuite {
     player.startPlay()
 
     (0 until concreteMelody.size).foreach {
-      i => player.sendNew(absoluteTimeToMillis(times(i)),
+      i => player.sendNewSingle(absoluteTimeToMillis(times(i)),
         SineInstrument(
           freq = concreteMelody(i),
           dur = 1f,
@@ -176,7 +176,7 @@ class MusicPlayerExample extends FunSuite {
     player.startPlay()
 
     (0 until concreteMelody.size).foreach {
-      i => player.sendNew(absoluteTimeToMillis(times(i)),
+      i => player.sendNewSingle(absoluteTimeToMillis(times(i)),
         SineInstrument(
           freq = concreteMelody(i),
           dur = 1f,
@@ -194,7 +194,7 @@ class MusicPlayerExample extends FunSuite {
     player.startPlay()
 
     (0 until concreteMelody.size).foreach {
-      i => player.sendNew(absoluteTimeToMillis(times(i)),
+      i => player.sendNewSingle(absoluteTimeToMillis(times(i)),
         SineInstrument(
           freq = concreteMelody(i),
           dur = 1f,
@@ -206,7 +206,7 @@ class MusicPlayerExample extends FunSuite {
     val retrogradeTimes = absolute(6, retrograde(durations))
 
     (0 until invertedTransposed.size).foreach {
-      i => player.sendNew(absoluteTimeToMillis(retrogradeTimes(i)),
+      i => player.sendNewSingle(absoluteTimeToMillis(retrogradeTimes(i)),
         SineInstrument(
           freq = invertedTransposed(i),
           dur = 1f,
@@ -241,7 +241,7 @@ class MusicPlayerExample extends FunSuite {
     (0 until 15).foreach {
       i =>
         val (dur, attack) = durations.takeItem()
-        player.sendNew(absoluteTimeToMillis(time),
+        player.sendNewSingle(absoluteTimeToMillis(time),
           SineInstrument(
             freq = harmonicSpectrum(melodyPattern.takeItem()),
             dur = dur,
@@ -284,7 +284,7 @@ class MusicPlayerExample extends FunSuite {
   case class PlayerActor(implicit player: MusicPlayer) extends LeafActor {
     def receive = {
       case PlayInstrumentEvent(time, instrument) =>
-        player.sendNew(absoluteTimeToMillis(time), instrument.build())
+        player.sendNewSingle(absoluteTimeToMillis(time), instrument.build())
     }
   }
 
