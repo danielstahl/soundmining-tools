@@ -77,6 +77,9 @@ case class MusicPlayer() {
   def makeFreeBuffer(bufferNumber: Integer) =
     makeOSCMessage("/b_free", Seq(bufferNumber))
 
+  def makeAllocRead(bufferNumber: Integer, pathName: String) =
+    makeOSCMessage("/b_allocRead", Seq(bufferNumber, pathName))
+  
   case class ComparableBundle(bundle: OSCBundle) extends Comparable[ComparableBundle] {
     override def compareTo(o: ComparableBundle): Int = {
       bundle.getTimestamp.compareTo(o.bundle.getTimestamp)
