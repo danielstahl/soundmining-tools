@@ -10,7 +10,7 @@ testOptions in Test := Seq(Tests.Filter(s => s.endsWith("Spec")))
 
 libraryDependencies += "com.illposed.osc" % "javaosc-core" % "0.2"
 
-libraryDependencies += "org.scalatest" % "scalatest_2.11" % "2.2.0" % "test"
+libraryDependencies += "org.scalatest" %% "scalatest" % "3.0.1" % "test"
 
 libraryDependencies += "com.typesafe.scala-logging" %% "scala-logging" % "3.5.0"
 

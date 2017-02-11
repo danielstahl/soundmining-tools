@@ -4,7 +4,7 @@ import net.soundmining.MusicActor.MusicActorPattern
 import net.soundmining._
 import Spectrum._
 import org.scalatest.FunSuite
-import scala.collection.JavaConversions._
+import scala.collection.JavaConverters._
 import java.{lang => jl}
 import Utils._
 
@@ -51,29 +51,29 @@ class MusicPlayerExample extends FunSuite {
   }
 
   case class SineInstrument(addAction: AddAction = HEAD_ACTION, nodeId: jl.Integer = 0,
-                            dur: jl.Float = 1,
-                            freq: jl.Float = 440,
-                            pan: jl.Float = 0,
+                            dur: jl.Float = 1f,
+                            freq: jl.Float = 440f,
+                            pan: jl.Float = 0f,
                             attack: jl.Float = 0.01f,
-                            amp: jl.Float = 1) extends AbstractInstrumentBuilder {
+                            amp: jl.Float = 1f) extends AbstractInstrumentBuilder {
     override val instrumentName: String = "sine"
   }
 
   case class TriangleInstrument(addAction: AddAction = HEAD_ACTION, nodeId: jl.Integer = 0,
-                                dur: jl.Float = 1,
-                                freq: jl.Float = 440,
-                                pan: jl.Float = 0,
+                                dur: jl.Float = 1f,
+                                freq: jl.Float = 440f,
+                                pan: jl.Float = 0f,
                                 attack: jl.Float = 0.01f,
-                                amp: jl.Float = 1) extends AbstractInstrumentBuilder {
+                                amp: jl.Float = 1f) extends AbstractInstrumentBuilder {
     override val instrumentName: String = "triangle"
   }
 
   case class PulseInstrument(addAction: AddAction = HEAD_ACTION, nodeId: jl.Integer = 0,
-                             dur: jl.Float = 1,
-                             freq: jl.Float = 440,
-                             pan: jl.Float = 0,
+                             dur: jl.Float = 1f,
+                             freq: jl.Float = 440f,
+                             pan: jl.Float = 0f,
                              attack: jl.Float = 0.01f,
-                             amp: jl.Float = 1) extends AbstractInstrumentBuilder {
+                             amp: jl.Float = 1f) extends AbstractInstrumentBuilder {
     override val instrumentName: String = "pulse"
   }
 
