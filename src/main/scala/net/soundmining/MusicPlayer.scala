@@ -9,7 +9,7 @@ import com.illposed.osc.{OSCBundle, OSCMessage, OSCPacket, OSCPortOut}
 import scala.collection.JavaConversions._
 
 case class MusicPlayer() {
-  val sender: OSCPortOut = new OSCPortOut(InetAddress.getLocalHost, 57110)
+  val sender: OSCPortOut = new OSCPortOut(InetAddress.getLoopbackAddress, 57110)
 
   val clock: PlayerClock = PlayerClock()
 
