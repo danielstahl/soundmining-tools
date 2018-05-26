@@ -4,7 +4,7 @@ organization := "net.soundmining"
 
 version := "1.0-SNAPSHOT"
 
-scalaVersion := "2.12.1"
+scalaVersion := "2.12.4"
 
 testOptions in Test := Seq(Tests.Filter(s => s.endsWith("Spec")))
 
