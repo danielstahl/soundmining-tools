@@ -217,12 +217,24 @@ case class ControlArgumentBuilder[ST <: InstrumentBuilder](me: ST, name: String)
 }
 
 /**
+  * Trait for Instruments that supplies a Bus for other instruments to
+  * have as input buses.
+  */
+trait BusSupplier {
+  def bus(): Integer
+}
+
+/**
  * Basic trait for control-instruments. Will only generate output.
  */
-trait ControlInstrumentBuilder extends OutputBuilder with InstrumentBuilder with DurBuilder
+trait ControlInstrumentBuilder extends OutputBuilder with InstrumentBuilder with DurBuilder with BusSupplier {
+  def bus(): Integer = out
+}
 
 /**
  * Basic trait for a controlReplaceInstrument. Will read data from input, transform it and
  * then output the result.
  */
-trait ControlReplaceInstrumentBuilder extends InputBuilder with InstrumentBuilder with DurBuilder
+trait ControlReplaceInstrumentBuilder extends InputBuilder with InstrumentBuilder with DurBuilder with BusSupplier {
+  def bus(): Integer = in
+}
