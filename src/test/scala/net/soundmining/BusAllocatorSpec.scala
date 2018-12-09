@@ -29,8 +29,14 @@ class BusAllocatorSpec extends FlatSpec with Matchers {
   it should "detect very simple channel collision" in {
     val allocator = BusAllocator(0)
     allocator.allocate(1, 0.0f, 1.0f)
-    allocator.allocate(1, 0.0F, 1.0f) should be(Seq(1))
+    allocator.allocate(1, 0.0f, 1.0f) should be(Seq(1))
   }
 
+  it should "detect end channel collision" in {
+    val allocator = BusAllocator(0)
+    allocator.allocate(1, 5.8865767f, 6.540641f)
+    allocator.allocate(1, 5.886576f, 6.671453f) should be(Seq(1))
 
+
+  }
 }
