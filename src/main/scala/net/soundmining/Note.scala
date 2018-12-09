@@ -63,8 +63,8 @@ object Note {
   }
 
   def hertzToNote(hertz: Float): Symbol = {
-    val pitchInAbsoluteCent = 1200f * Math.log(hertz / refFreq) / logTwo
-
+    if(hertz == 0.0f) return 'undefined
+    val pitchInAbsoluteCent: Double = 1200f * Math.log(hertz / refFreq) / logTwo
     val roundedCent = Math.round(pitchInAbsoluteCent / 100f) * 100f
 
     val nrOfOctaves = Math.floor(roundedCent / 1200f)

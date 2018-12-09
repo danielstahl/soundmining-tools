@@ -28,7 +28,9 @@ case class BusAllocator(startChannel: jl.Integer) {
       case (channels, allocs) =>
         channels.size == nrOfChannels &&
           allocs.forall {
-            case (s, e) => !between(start, s, e) && !between(end, s, e)
+            case (s, e) =>
+              !between(start, s, e) && !between(end, s, e) &&
+                !(start <= s && end >= e)
           }
     }
 
