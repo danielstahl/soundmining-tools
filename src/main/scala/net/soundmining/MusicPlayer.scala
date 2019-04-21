@@ -13,6 +13,10 @@ case class MusicPlayer() {
 
   val clock: PlayerClock = PlayerClock()
 
+  val playQueue: PriorityBlockingQueue[ComparableBundle] = new PriorityBlockingQueue()
+  
+  var playing: Boolean = true
+
   def play(playable: Playable): Unit = {
     clock.reset()
     playable.play()(this)
@@ -28,7 +32,13 @@ case class MusicPlayer() {
 
   def startPlay(): Unit = {
     clock.reset()
+    this.playing = true
     playThread.start()
+  }
+
+  def stopPlay(): Unit = {
+    clock.reset()
+    this.playing = false
   }
 
   def sendNew(deltaTime: Long, messages: Seq[Seq[Object]]) =
@@ -86,8 +96,6 @@ case class MusicPlayer() {
     }
   }
 
-  val playQueue: PriorityBlockingQueue[ComparableBundle] = new PriorityBlockingQueue()
-
   val playThread = new Thread(new Runnable {
     val BUFFER_TIME = 1000 * 30
 
@@ -105,7 +113,7 @@ case class MusicPlayer() {
 
     override def run() = {
       println(s"Starting background player")
-      while (true) {
+      while (playing) {
         while (peekOverdue) {
           sender.send(playQueue.poll().bundle)
         }
