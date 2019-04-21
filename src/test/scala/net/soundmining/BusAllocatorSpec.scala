@@ -36,7 +36,11 @@ class BusAllocatorSpec extends FlatSpec with Matchers {
     val allocator = BusAllocator(0)
     allocator.allocate(1, 5.8865767f, 6.540641f)
     allocator.allocate(1, 5.886576f, 6.671453f) should be(Seq(1))
+  }
 
-
+  it should "avoid exact match" in {
+    val allocator = BusAllocator(0)
+    allocator.allocate(1, 11.119088f, 15.370504f)
+    allocator.allocate(1, 15.370504f, 0.1f) should be(Seq(1))
   }
 }

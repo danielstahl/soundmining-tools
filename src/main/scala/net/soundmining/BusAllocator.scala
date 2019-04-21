@@ -22,15 +22,20 @@ case class BusAllocator(startChannel: jl.Integer) {
     }.toArray
   }
 
+  def overlap(start: Float, end: Float, allocStart: Float, allocEnd: Float): Boolean =
+    between(start, allocStart, allocEnd) ||
+      between(end, allocStart, allocEnd) ||
+      (start <= allocStart && end >= allocEnd)
+
+
   def allocate(nrOfChannels: Int, start: Float, end: Float): Seq[Int] = {
 
     val foundAllocation = allocations.find {
       case (channels, allocs) =>
         channels.size == nrOfChannels &&
           allocs.forall {
-            case (s, e) =>
-              !between(start, s, e) && !between(end, s, e) &&
-                !(start <= s && end >= e)
+            case (allocStart, allocEnd) =>
+              !overlap(start, end, allocStart, allocEnd)
           }
     }
 
