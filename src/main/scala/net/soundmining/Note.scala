@@ -62,6 +62,10 @@ object Note {
     refFreq * Math.pow(2, absoluteCent / 1200.0f).toFloat
   }
 
+  def hertzToCents(hertz: Float): Float = {
+    (1200f * Math.log(hertz / refFreq) / logTwo).toFloat
+  }
+
   def hertzToNote(hertz: Float): Symbol = {
     if(hertz == 0.0f) return 'undefined
     val pitchInAbsoluteCent: Double = 1200f * Math.log(hertz / refFreq) / logTwo
@@ -81,9 +85,13 @@ object Note {
     import Spectrum._
 
     val hertz = 850.2832f
+    val cents = hertzToCents(hertz)
     val note = hertzToNote(hertz)
 
-    println(note)
+    println(s"hertz $hertz")
+    println(s"cents $cents")
+    println(s"note $note")
+    println(s"hertz ${centsToHertz(cents)}")
 
   }
 }

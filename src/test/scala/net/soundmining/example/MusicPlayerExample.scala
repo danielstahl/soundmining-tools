@@ -281,7 +281,7 @@ class MusicPlayerExample extends FunSuite {
   case class PlayInstrumentEvent(time: Float, instrument: AbstractInstrumentBuilder)
     extends MusicEvent
 
-  case class PlayerActor(implicit player: MusicPlayer) extends LeafActor {
+  case class PlayerActor()(implicit player: MusicPlayer) extends LeafActor {
     def receive = {
       case PlayInstrumentEvent(time, instrument) =>
         player.sendNewSingle(absoluteTimeToMillis(time), instrument.build())

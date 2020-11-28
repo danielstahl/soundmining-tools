@@ -6,7 +6,7 @@ import java.{util => ju}
 
 import com.illposed.osc.{OSCBundle, OSCMessage, OSCPacket, OSCPortOut}
 
-import scala.collection.JavaConversions._
+import scala.jdk.CollectionConverters._
 
 case class MusicPlayer() {
   val sender: OSCPortOut = new OSCPortOut(InetAddress.getLoopbackAddress, 57110)
@@ -49,13 +49,13 @@ case class MusicPlayer() {
 
   private def makeOSCMessage(name: String, arguments: Seq[Object]): OSCMessage = {
     val theMessages = new ju.ArrayList[Object](arguments.size)
-    theMessages.addAll(arguments)
+    theMessages.addAll(arguments.asJava)
     new OSCMessage(name, theMessages)
   }
 
   private def makeOSCBundle(messages: Seq[OSCPacket], theTime: ju.Date) = {
     val theMessages = new ju.ArrayList[OSCPacket](messages.size)
-    theMessages.addAll(messages)
+    theMessages.addAll(messages.asJava)
     new OSCBundle(theMessages, theTime)
   }
 

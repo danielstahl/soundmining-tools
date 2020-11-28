@@ -19,7 +19,7 @@ case class BusAllocator(startChannel: jl.Integer) {
     } else {
       val maxChannel = allocations.keys.map(_.max).max
       Range(maxChannel + 1, maxChannel + 1 + nrOfChannels)
-    }.toArray
+    }.toSeq
   }
 
   def overlap(start: Float, end: Float, allocStart: Float, allocEnd: Float): Boolean =
