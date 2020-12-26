@@ -1,9 +1,7 @@
-package net.soundmining
+package net.soundmining.synth
 
-import net.soundmining.Instrument._
-import net.soundmining.Utils._
-
-import java.{lang => jl}
+import SuperColliderClient._
+import Instrument._
 
 /**
  * Basic building blocks to work with instruments
@@ -25,32 +23,27 @@ object Instrument {
    * How the instrument is added relative to
    * other playing instruments when played
    */
-  sealed case class AddAction(action: Integer)
-  object HEAD_ACTION extends AddAction(new Integer(0))
-  object TAIL_ACTION extends AddAction(new Integer(1))
-  object BEFORE_ACTION extends AddAction(new Integer(2))
-  object AFTER_ACTION extends AddAction(new Integer(3))
+  sealed case class AddAction(action: Int)
+  object HEAD_ACTION extends AddAction(0)
+  object TAIL_ACTION extends AddAction(1)
+  object BEFORE_ACTION extends AddAction(2)
+  object AFTER_ACTION extends AddAction(3)
 
   /**
    * Predefined nodes to add instruments to.
    * This is important if you want instruments
    * to be able to act upon other instruments
    */
-  sealed case class Node(nodeId: Integer)
+  sealed case class Node(nodeId: Int)
   object SOURCE extends Node(1004)
   object EFFECT extends Node(1005)
   object ROOM_EFFECT extends Node(1006)
 
-  def setupNodes(player: MusicPlayer) = {
-    val osc = Seq(
-      player.makeGroupHead(0, SOURCE.nodeId),
-      player.makeGroupTail(SOURCE.nodeId, EFFECT.nodeId),
-      player.makeGroupTail(EFFECT.nodeId, ROOM_EFFECT.nodeId))
-    player.sendBundle(absoluteTimeToMillis(0f), osc)
+  def setupNodes(player: SuperColliderClient): Unit = {
+      player.send(groupHead(0, SOURCE.nodeId))
+      player.send(groupTail(SOURCE.nodeId, EFFECT.nodeId))
+      player.send(groupTail(EFFECT.nodeId, ROOM_EFFECT.nodeId))
   }
-
-  def buildFloat(value: Float): jl.Float = new jl.Float(value)
-  def buildInteger(value: Int): jl.Integer = new jl.Integer(value)
 }
 
 /**
@@ -68,28 +61,28 @@ trait ArgumentBuilder {
  */
 object BusGenerator {
 
-  var control = buildInteger(0)
-  var audio = buildInteger(16)
+  var control: Int = 0
+  var audio: Int = 16
 
   def reset() = {
-    control = buildInteger(0)
-    audio = buildInteger(16)
+    control = 0
+    audio = 16
   }
 
-  def nextControl(): jl.Integer = {
+  def nextControl(): Int = {
     val result = control
-    control = buildInteger(control + 1)
+    control = control + 1
     result
   }
 
-  def nextAudio(): jl.Integer = {
+  def nextAudio(): Int = {
     val result = audio
-    audio = buildInteger(audio + 1)
+    audio = audio + 1
     result
   }
 
-  def currentControl: jl.Integer = control
-  def currentAudio: jl.Integer = audio
+  def currentControl: Int = control
+  def currentAudio: Int = audio
 }
 
 /**
@@ -101,9 +94,9 @@ trait InstrumentBuilder extends ArgumentBuilder {
   var instruments: Seq[InstrumentBuilder] = Seq(this)
 
   def addChild(instrument: InstrumentBuilder) = instruments = instruments :+ instrument
-  def buildInstruments(): Seq[Seq[Object]] = instruments.reverseMap(_.build())
+  def buildInstruments(): Seq[Seq[Any]] = instruments.reverseMap(_.build())
 
-  def build(): Seq[Object]
+  def build(): Seq[Any]
 }
 
 /**
@@ -127,10 +120,10 @@ abstract class AbstractInstrumentBuilder extends InstrumentBuilder {
     self()
   }
 
-  def build(): Seq[Object] = {
+  def build(): Seq[Any] = {
     Seq(
       instrumentName,
-      new Integer(-1), addAction.action, nodeId.nodeId
+      -1, addAction.action, nodeId.nodeId
     )
   }
 }
@@ -140,14 +133,14 @@ abstract class AbstractInstrumentBuilder extends InstrumentBuilder {
  * the SynthDef should be named "dur".
  */
 trait DurBuilder extends ArgumentBuilder {
-  var dur: jl.Float = buildFloat(1f)
+  var dur: Double = 1
 
-  def dur(value: Float): SelfType = {
-    dur = buildFloat(value)
+  def dur(value: Double): SelfType = {
+    dur = value
     self()
   }
 
-  def buildDur(): Seq[Object] = Seq("dur", dur)
+  def buildDur(): Seq[Any] = Seq("dur", dur)
 }
 
 /**
@@ -155,14 +148,14 @@ trait DurBuilder extends ArgumentBuilder {
  * in the SynthDef should be named "out".
  */
 trait OutputBuilder extends ArgumentBuilder {
-  var out: jl.Integer = buildInteger(0)
+  var out: Int = 0
 
   def out(value: Int): SelfType = {
-    out = buildInteger(value)
+    out = value
     self()
   }
 
-  def buildOut(): Seq[Object] = Seq("out", out)
+  def buildOut(): Seq[Any] = Seq("out", out)
 }
 
 /**
@@ -170,14 +163,14 @@ trait OutputBuilder extends ArgumentBuilder {
  * in the SynthDef should be named "in".
  */
 trait InputBuilder extends ArgumentBuilder {
-  var in: jl.Integer = buildInteger(0)
+  var in: Int = 0
 
   def in(value: Int): SelfType = {
-    in = buildInteger(value)
+    in = value
     self()
   }
 
-  def buildIn(): Seq[Object] = Seq("in", in)
+  def buildIn(): Seq[Any] = Seq("in", in)
 }
 
 /**
@@ -191,10 +184,10 @@ case class ControlArgumentBuilder[ST <: InstrumentBuilder](me: ST, name: String)
   override type SelfType = ST
   override def self(): SelfType = me
 
-  var bus: jl.Integer = buildInteger(0)
+  var bus: Int = 0
 
   def bus(value: Int): SelfType = {
-    bus = buildInteger(value)
+    bus = value
     self()
   }
 
@@ -211,7 +204,7 @@ case class ControlArgumentBuilder[ST <: InstrumentBuilder](me: ST, name: String)
     self()
   }
 
-  def buildBus(): Seq[Object] = Seq(
+  def buildBus(): Seq[Any] = Seq(
     name, bus
   )
 }
@@ -221,14 +214,14 @@ case class ControlArgumentBuilder[ST <: InstrumentBuilder](me: ST, name: String)
   * have as input buses.
   */
 trait BusSupplier {
-  def bus(): Integer
+  def bus(): Int
 }
 
 /**
  * Basic trait for control-instruments. Will only generate output.
  */
 trait ControlInstrumentBuilder extends OutputBuilder with InstrumentBuilder with DurBuilder with BusSupplier {
-  def bus(): Integer = out
+  def bus(): Int = out
 }
 
 /**
@@ -236,5 +229,5 @@ trait ControlInstrumentBuilder extends OutputBuilder with InstrumentBuilder with
  * then output the result.
  */
 trait ControlReplaceInstrumentBuilder extends InputBuilder with InstrumentBuilder with DurBuilder with BusSupplier {
-  def bus(): Integer = in
+  def bus(): Int = in
 }

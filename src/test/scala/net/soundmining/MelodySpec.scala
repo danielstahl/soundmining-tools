@@ -36,12 +36,12 @@ class MelodySpec extends FlatSpec {
   }
 
   it should "make a absolute time melody" in {
-    val melody = Seq(5f, 4f)
-    assert(absolute(0, melody) === Seq(0, 5))
+    val melody = Seq(5.0, 4.0)
+    assert(absolute(0, melody) === Seq(0.0, 5.0))
   }
 
   it should "make a absolute time with delta" in {
-    val melody = Seq(5f, 4f)
-    assert(absolute(5, melody) === Seq(5, 10))
+    val melody = Seq(5.0, 4.0)
+    assert(absolute(5, melody) === Seq(5.0, 10.0))
   }
 }

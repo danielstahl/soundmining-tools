@@ -43,11 +43,11 @@ object Melody {
 
   def retrograde[T](melody: Seq[T]): Seq[T] = melody.reverse
 
-  def concrete(indices: Seq[Int], spectrum: Seq[Float]): Seq[Float] = {
+  def concrete(indices: Seq[Int], spectrum: Seq[Double]): Seq[Double] = {
     indices.map(spectrum(_))
   }
 
-  def absolute(start: Float, relative: Seq[Float]): Seq[Float] = {
+  def absolute(start: Double, relative: Seq[Double]): Seq[Double] = {
     var tmp = start
     relative.map {
       time =>
