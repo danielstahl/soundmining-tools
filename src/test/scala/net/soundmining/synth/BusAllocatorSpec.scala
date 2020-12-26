@@ -1,4 +1,4 @@
-package net.soundmining
+package net.soundmining.synth
 
 import org.scalatest.{FlatSpec, Matchers}
 

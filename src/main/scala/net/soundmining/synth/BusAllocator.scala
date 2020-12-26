@@ -1,17 +1,13 @@
-package net.soundmining
-
-import java.{lang => jl}
-
-import scala.collection.JavaConverters._
+package net.soundmining.synth
 
 object BusAllocator {
-  val control: BusAllocator = BusAllocator(jl.Integer.valueOf(0))
-  val audio: BusAllocator = BusAllocator(jl.Integer.valueOf(16))
+  val control: BusAllocator = BusAllocator(0)
+  val audio: BusAllocator = BusAllocator(16)
 }
 
-case class BusAllocator(startChannel: jl.Integer) {
+case class BusAllocator(startChannel: Int) {
 
-  var allocations: Map[Seq[Int], Seq[(Float, Float)]] = Map()
+  var allocations: Map[Seq[Int], Seq[(Double, Double)]] = Map()
 
   def allocateNewChannels(nrOfChannels: Int): Seq[Int] = {
     if (allocations.isEmpty) {
@@ -22,13 +18,13 @@ case class BusAllocator(startChannel: jl.Integer) {
     }.toSeq
   }
 
-  def overlap(start: Float, end: Float, allocStart: Float, allocEnd: Float): Boolean =
+  def overlap(start: Double, end: Double, allocStart: Double, allocEnd: Double): Boolean =
     between(start, allocStart, allocEnd) ||
       between(end, allocStart, allocEnd) ||
       (start <= allocStart && end >= allocEnd)
 
 
-  def allocate(nrOfChannels: Int, start: Float, end: Float): Seq[Int] = {
+  def allocate(nrOfChannels: Int, start: Double, end: Double): Seq[Int] = {
 
     val foundAllocation = allocations.find {
       case (channels, allocs) =>
@@ -39,7 +35,7 @@ case class BusAllocator(startChannel: jl.Integer) {
           }
     }
 
-    val allocation: (Seq[Int], Seq[(Float, Float)]) = foundAllocation match {
+    val allocation: (Seq[Int], Seq[(Double, Double)]) = foundAllocation match {
       case Some((channels, allocs)) =>
         (channels, allocs :+ (start, end))
       case None =>
@@ -50,6 +46,6 @@ case class BusAllocator(startChannel: jl.Integer) {
     allocation._1
   }
 
-  def between(value: Float, start: Float, end: Float): Boolean =
+  def between(value: Double, start: Double, end: Double): Boolean =
     value >= start && value <= end
 }
