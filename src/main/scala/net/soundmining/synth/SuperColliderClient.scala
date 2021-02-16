@@ -6,7 +6,8 @@ import de.sciss.osc.Implicits._
 case class SuperColliderClient() {
     import SuperColliderClient._
     val DELAY: Long = 2000
-
+    val DUMP: Boolean = false
+    val DUMP_SERVER: Boolean = true
     var client: UDP.Client = _
     var clockTime: Long = _
 
@@ -15,9 +16,9 @@ case class SuperColliderClient() {
         cfg.codec = PacketCodec().doublesAsFloats().booleansAsInts()
         this.client = UDP.Client("127.0.0.1" -> 57110, cfg)
         client.connect()
-        client.dump()
-        //client.action = reply
-        send(dumpOSC(true))
+        if(DUMP) client.dump()
+        client.action = reply
+        if(DUMP_SERVER) send(dumpOSC(true))
         send(scNotify(true))
         resetClock
     }
