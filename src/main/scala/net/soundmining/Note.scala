@@ -5,8 +5,8 @@ package net.soundmining
   * For reference: http://www.phy.mtu.edu/~suits/notefreqs.html
   */
 object Note {
-  val refFreq = 16.3516f
-  val logTwo = Math.log(2.0).toFloat
+  val refFreq = 16.3516
+  val logTwo = Math.log(2.0).toDouble
 
   val notePattern = """([ABCDEFGHabcdefgh]{1})(iss|ess)?(\d){1}""".r
 
@@ -58,22 +58,20 @@ object Note {
     centsToHertz(absoluteCents)
   }
 
-  def centsToHertz(absoluteCent: Float): Float = {
-    refFreq * Math.pow(2, absoluteCent / 1200.0f).toFloat
-  }
+  def centsToHertz(absoluteCent: Double): Double = 
+    refFreq * Math.pow(2, absoluteCent / 1200.0).toDouble
 
-  def hertzToCents(hertz: Float): Float = {
-    (1200f * Math.log(hertz / refFreq) / logTwo).toFloat
-  }
+  def hertzToCents(hertz: Double): Double = 
+    (1200f * Math.log(hertz / refFreq) / logTwo).toDouble
 
-  def hertzToNote(hertz: Float): Symbol = {
+  def hertzToNote(hertz: Double): Symbol = {
     if(hertz == 0.0f) return 'undefined
     val pitchInAbsoluteCent: Double = 1200f * Math.log(hertz / refFreq) / logTwo
-    val roundedCent = Math.round(pitchInAbsoluteCent / 100f) * 100f
+    val roundedCent = Math.round(pitchInAbsoluteCent / 100.0) * 100.0
 
-    val nrOfOctaves = Math.floor(roundedCent / 1200f)
+    val nrOfOctaves = Math.floor(roundedCent / 1200.0)
 
-    val noteCents = roundedCent - (nrOfOctaves * 1200)
+    val noteCents = roundedCent - (nrOfOctaves * 1200.0)
     val theNote = centNotes(noteCents.toInt)
 
     val absoluteNote = Symbol(theNote + nrOfOctaves.toInt)
@@ -84,7 +82,7 @@ object Note {
   def main(args: Array[String]): Unit = {
     import Spectrum._
 
-    val hertz = 850.2832f
+    val hertz = 850.2832
     val cents = hertzToCents(hertz)
     val note = hertzToNote(hertz)
 

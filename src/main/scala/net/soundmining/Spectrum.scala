@@ -10,36 +10,36 @@ object Spectrum {
   * */
 
 
-  val phi: Float = (1 + Math.sqrt(5).asInstanceOf[Float]) / 2
+  val phi: Double = (1 + Math.sqrt(5).asInstanceOf[Double]) / 2
 
-  val invPhi: Float = 1 / phi
+  val invPhi: Double = 1 / phi
 
-  private def internalMakeSpectrum(base: Float, fact: Float, size: Int, inverted: Boolean = false): Seq[Float] =
+  private def internalMakeSpectrum(base: Double, fact: Double, size: Int, inverted: Boolean = false): Seq[Double] =
     for {
       i <- 0 until size
-      multiplier: Float = fact * ((i + 1) - 1) + 1
+      multiplier: Double = fact * ((i + 1) - 1) + 1
     } yield if(inverted) base / multiplier else base * multiplier
 
-  def makeSpectrum(base: Float, fact: Float, size: Int): Seq[Float] =
+  def makeSpectrum(base: Double, fact: Double, size: Int): Seq[Double] =
     internalMakeSpectrum(base, fact, size)
 
-  def makeInvertedSpectrum(base: Float, fact: Float, size: Int): Seq[Float] =
+  def makeInvertedSpectrum(base: Double, fact: Double, size: Int): Seq[Double] =
     internalMakeSpectrum(base, fact, size, inverted = true)
 
-  def makeSpectrum2(fundamental: Float, fact: Float, size: Int): Seq[Float] = {
+  def makeSpectrum2(fundamental: Double, fact: Double, size: Int): Seq[Double] = {
     (1 to size).map(i => {
       val multiplier = ((i - 1) * fact) + 1
       fundamental * multiplier
     })
   }
 
-  def makeFact(fundamental: Float, firstPartial: Float): Float =
+  def makeFact(fundamental: Double, firstPartial: Double): Double =
     (firstPartial / fundamental) - 1
 
   /*
   * http://www.indiana.edu/~emusic/fm/fm.htm
   * */
-  def  makeFmSynthesis(carrier: Float, modulator: Float, size: Int): Seq[(Float, Float)] =
+  def  makeFmSynthesis(carrier: Double, modulator: Double, size: Int): Seq[(Double, Double)] =
   (0 until size)
     .map(i =>
       (math.abs(carrier + (i * modulator)), math.abs(carrier - (i * modulator))))

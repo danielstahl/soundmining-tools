@@ -3,7 +3,7 @@ package net.soundmining.synth
 import de.sciss.osc._
 import de.sciss.osc.Implicits._
 
-case class SuperColliderClient() {
+case class SuperColliderClient(numberOfOutputBuses: Int = 2) {
     import SuperColliderClient._
     val DELAY: Long = 2000
     val DUMP: Boolean = false
@@ -42,6 +42,10 @@ case class SuperColliderClient() {
         val oscMessages = messages.map(message => newSynthRaw(message:_*))
         bundle(deltaTime, oscMessages:_*)
     }
+
+    def getRealOutputBus(outputBus: Int): Int =
+        if(numberOfOutputBuses > 2) (outputBus % numberOfOutputBuses) + 2
+        else outputBus % numberOfOutputBuses
         
 }
 
