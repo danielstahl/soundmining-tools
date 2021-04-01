@@ -9,11 +9,11 @@ import org.scalatest.FunSuite
 class SpectrumSpec extends FunSuite {
 
   test("make spectrum") {
-    assert(makeSpectrum(110, 2, 5) === Seq[Float](110.0f, 330.0f, 550.0f, 770.0f, 990.0f))
+    assert(makeSpectrum(110, 2, 5) === Seq[Double](110.0, 330.0, 550.0, 770.0, 990.0))
   }
 
   test("make inverted spectrum") {
-    assert(makeInvertedSpectrum(110, 2f, 5) === Seq[Float](110.0f, 36.666668f, 22.0f, 15.714286f, 12.222222f))
+    assert(makeInvertedSpectrum(110, 2f, 5) === Seq[Double](110.0, 36.666666666666664, 22.0, 15.714285714285714, 12.222222222222221))
   }
 
   test("make fm sidebands") {
