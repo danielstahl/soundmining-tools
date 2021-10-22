@@ -2,7 +2,7 @@ package net.soundmining.synth
 
 object BusAllocator {
   val control: BusAllocator = BusAllocator(0)
-  val audio: BusAllocator = BusAllocator(16)
+  val audio: BusAllocator = BusAllocator(64)
 }
 
 case class BusAllocator(startChannel: Int) {
