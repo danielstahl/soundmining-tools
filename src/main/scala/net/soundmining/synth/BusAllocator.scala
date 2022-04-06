@@ -18,6 +18,11 @@ case class BusAllocator(startChannel: Int) {
     }.toSeq
   }
 
+  def resetAllocations(): Unit = {
+    println(s"Reset ${this.getClass.getName} bus allocations")
+    allocations = Map()
+  }
+
   def overlap(start: Double, end: Double, allocStart: Double, allocEnd: Double): Boolean =
     between(start, allocStart, allocEnd) ||
       between(end, allocStart, allocEnd) ||

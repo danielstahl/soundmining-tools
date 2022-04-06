@@ -12,7 +12,7 @@ object Instrument {
    * Envelope curves
    */
   sealed case class EnvCurve(name: String)
-  object LINEAR extends EnvCurve("line")
+  object LINEAR extends EnvCurve("lin")
   object SINE extends EnvCurve("sin")
   object EXPONENTIAL extends EnvCurve("exp")
   object WELCH extends EnvCurve("wel")

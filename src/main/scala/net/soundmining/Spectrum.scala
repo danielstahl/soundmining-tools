@@ -43,4 +43,8 @@ object Spectrum {
   (0 until size)
     .map(i =>
       (math.abs(carrier + (i * modulator)), math.abs(carrier - (i * modulator))))
+
+
+  def ringModulate(carrier: Double, modulator: Double): (Double, Double) =
+    (carrier + modulator, carrier - modulator)
 }

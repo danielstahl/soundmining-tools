@@ -3,50 +3,47 @@ package net.soundmining.synth
 import de.sciss.osc._
 import de.sciss.osc.Implicits._
 
-case class SuperColliderClient(numberOfOutputBuses: Int = 2) {
+
+case class SuperColliderClient() {
     import SuperColliderClient._
     val DELAY: Long = 2000
-    val DUMP: Boolean = false
     val DUMP_SERVER: Boolean = true
     var client: UDP.Client = _
     var clockTime: Long = _
 
-    def start: Unit = {
+    def start(): Unit = {
         val cfg = UDP.Config()
-        cfg.codec = PacketCodec().doublesAsFloats().booleansAsInts()
+        cfg.codec = PacketCodec().doublesAsFloats().booleansAsInts().arrays()
         this.client = UDP.Client("127.0.0.1" -> 57110, cfg)
         client.connect()
-        if(DUMP) client.dump()
         client.action = reply
         if(DUMP_SERVER) send(dumpOSC(true))
         send(scNotify(true))
-        resetClock
+        resetClock()
     }
 
-    def resetClock: Unit = 
+    def resetClock(): Unit = {
         clockTime = System.currentTimeMillis()
+        BusAllocator.audio.resetAllocations()
+        BusAllocator.control.resetAllocations()
+    }
 
     def send(packet: Packet): Unit = 
         client ! packet
         
-    def stop: Unit = 
+    def stop(): Unit =
         client.close()
-    
+
     def reply(packet: Packet): Unit =
         println(packet)
 
     def bundle(deltaTime: Long, packets: Packet*): Bundle =
         Bundle.millis(clockTime + DELAY + deltaTime, packets: _*)
         
-    def newBundle(deltaTime: Long, messages: Seq[Seq[Any]]) = {
+    def newBundle(deltaTime: Long, messages: Seq[Seq[Any]]): Bundle = {
         val oscMessages = messages.map(message => newSynthRaw(message:_*))
         bundle(deltaTime, oscMessages:_*)
     }
-
-    def getRealOutputBus(outputBus: Int): Int =
-        if(numberOfOutputBuses > 2) (outputBus % numberOfOutputBuses) + 2
-        else outputBus % numberOfOutputBuses
-        
 }
 
 object SuperColliderClient {
