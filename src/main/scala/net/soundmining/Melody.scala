@@ -15,8 +15,8 @@ object Melody {
 
   def inverse(melody: Seq[Int]): Seq[Int] = {
     val intervals = makeIntervals(melody)
-    var result = Seq(intervals(0))
-    var last = intervals(0)
+    var result = Seq(intervals.head)
+    var last = intervals.head
     intervals.tail.foreach {
       item =>
         val tmp = last + (item * -1)
@@ -28,8 +28,8 @@ object Melody {
 
 
   def makeIntervals(melody: Seq[Int]): Seq[Int] = {
-    var lastItem = melody(0)
-    var result = Seq(melody(0))
+    var lastItem = melody.head
+    var result = Seq(melody.head)
 
     melody.tail.foreach {
       item =>

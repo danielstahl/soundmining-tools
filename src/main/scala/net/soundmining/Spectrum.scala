@@ -10,7 +10,7 @@ object Spectrum {
   * */
 
 
-  val phi: Double = (1 + Math.sqrt(5).asInstanceOf[Double]) / 2
+  val phi: Double = (1 + Math.sqrt(5)) / 2
 
   val invPhi: Double = 1 / phi
 

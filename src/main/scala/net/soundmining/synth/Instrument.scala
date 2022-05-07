@@ -64,7 +64,7 @@ object BusGenerator {
   var control: Int = 0
   var audio: Int = 16
 
-  def reset() = {
+  def reset(): Unit = {
     control = 0
     audio = 16
   }
@@ -93,7 +93,7 @@ object BusGenerator {
 trait InstrumentBuilder extends ArgumentBuilder {
   var instruments: Seq[InstrumentBuilder] = Seq(this)
 
-  def addChild(instrument: InstrumentBuilder) = instruments = instruments :+ instrument
+  def addChild(instrument: InstrumentBuilder): Unit = instruments = instruments :+ instrument
   def buildInstruments(): Seq[Seq[Any]] = instruments.reverseMap(_.build())
 
   def build(): Seq[Any]
