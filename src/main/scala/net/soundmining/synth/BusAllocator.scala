@@ -15,7 +15,7 @@ case class BusAllocator(startChannel: Int) {
     } else {
       val maxChannel = allocations.keys.map(_.max).max
       Range(maxChannel + 1, maxChannel + 1 + nrOfChannels)
-    }.toSeq
+    }
   }
 
   def resetAllocations(): Unit = {

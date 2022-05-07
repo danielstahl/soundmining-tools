@@ -25,7 +25,7 @@ object MusicActor {
 trait MusicActor extends LazyLogging {
   protected def receive: PartialFunction[MusicEvent, Unit]
 
-  private def aroundReceive(event: MusicEvent) = receive.applyOrElse(event, unhandled)
+  private def aroundReceive(event: MusicEvent): Unit = receive.applyOrElse(event, unhandled)
 
   private def unhandled(event: MusicEvent): Unit = {
     event match {
@@ -36,7 +36,7 @@ trait MusicActor extends LazyLogging {
   def listen(actor: MusicActor): MusicActor
   def listen(l: MusicActorPattern): MusicActor
 
-  def tell(event: MusicEvent) {
+  def tell(event: MusicEvent): Unit =  {
     logger.trace(s"$event -> $this")
     aroundReceive(event)
   }
@@ -45,12 +45,12 @@ trait MusicActor extends LazyLogging {
 trait NodeActor extends MusicActor {
   var listeners: MusicActorPattern
 
-  def listen(l: MusicActorPattern) = {
+  def listen(l: MusicActorPattern): NodeActor = {
     listeners = l
     this
   }
 
-  def listen(actor: MusicActor) = {
+  def listen(actor: MusicActor): MusicActor = {
     listeners = constant(actor)
     actor
   }
@@ -62,7 +62,7 @@ trait LeafActor extends MusicActor {
 }
 
 object EmptyActor extends LeafActor {
-  def receive = {
+  def receive: PartialFunction[MusicEvent, Unit] = {
     case event: MusicEvent =>
   }
 }
@@ -72,7 +72,7 @@ trait MusicEvent {
 
 
 object PrinterActor extends LeafActor {
-  def receive = {
+  def receive: PartialFunction[MusicEvent, Unit] = {
     case event: MusicEvent => logger.info(s"$event")
   }
   override def toString = "PrinterActor"

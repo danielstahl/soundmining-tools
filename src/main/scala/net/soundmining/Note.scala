@@ -1,14 +1,16 @@
 package net.soundmining
 
+import scala.util.matching.Regex
+
 /**
   * A note class
   * For reference: http://www.phy.mtu.edu/~suits/notefreqs.html
   */
 object Note {
   val refFreq = 16.3516
-  val logTwo = Math.log(2.0)
+  val logTwo: Double = Math.log(2.0)
 
-  val notePattern = """([ABCDEFGHabcdefgh]{1})(iss|ess)?(\d){1}""".r
+  val notePattern: Regex = """([ABCDEFGHabcdefgh]{1})(iss|ess)?(\d){1}""".r
 
   val naturalNoteCents = Map(
     "c" -> 0,
@@ -43,7 +45,7 @@ object Note {
 
   val octaveCents = 1200
 
-  def noteToHertz(note: String) = {
+  def noteToHertz(note: String): Double = {
     val theMatch = notePattern.findAllIn(note)
     val noteName = theMatch.group(1)
     val modifier = Option(theMatch.group(2)).getOrElse("natural")

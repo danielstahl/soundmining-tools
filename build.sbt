@@ -6,7 +6,7 @@ version := "1.0-SNAPSHOT"
 
 scalaVersion := "2.13.8"
 
-testOptions in Test := Seq(Tests.Filter(s => s.endsWith("Spec")))
+Test / testOptions := Seq(Tests.Filter(s => s.endsWith("Spec")))
 
 libraryDependencies += "org.scalatest" %% "scalatest" % "3.0.8" % "test"
 
