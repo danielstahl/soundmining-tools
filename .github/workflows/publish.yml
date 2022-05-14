@@ -1,7 +1,4 @@
 name: Publish package to GitHub Packages
-permissions:
-  contents: read
-  packages: write
 on:
   push:
     branches: [master]
@@ -17,7 +14,7 @@ jobs:
           java-version: '17'
           cache: 'sbt'
       - name: Publish package
-        run: sbt test publish
+        run: sbt -v test publish
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
