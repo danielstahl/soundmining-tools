@@ -14,7 +14,8 @@ jobs:
           java-version: '17'
           cache: 'sbt'
       - name: Publish package
-        run: sbt -v test publish
+        # run: sbt test publish
+        run: sbt test
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
