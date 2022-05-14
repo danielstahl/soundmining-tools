@@ -1,8 +1,8 @@
 name := "soundmining-tools"
 
-organization := "net.soundmining"
-
-version := "1.0-SNAPSHOT"
+ThisBuild / organization := "net.soundmining"
+ThisBuild / version := "1.0-SNAPSHOT"
+ThisBuild / versionScheme := Some("early-semver")
 
 scalaVersion := "2.13.8"
 
@@ -16,10 +16,8 @@ libraryDependencies += "ch.qos.logback" % "logback-classic" % "1.2.11"
 
 libraryDependencies += "de.sciss" %% "scalaosc" % "1.3.1" withSources()
 
-ThisBuild / versionScheme := Some("early-semver")
-
 // publish to github packages settings
-publishTo := Some("GitHub danielstahl Apache Maven Packages" at "https://maven.pkg.github.com/danielstahl/soundmingin-tools")
+publishTo := Some("GitHub danielstahl Apache Maven Packages" at "https://github.com/danielstahl/soundmining-tools")
 publishMavenStyle := true
 credentials += Credentials(
   "GitHub Package Registry",
