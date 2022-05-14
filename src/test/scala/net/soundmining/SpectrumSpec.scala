@@ -1,12 +1,12 @@
 package net.soundmining
 
 import net.soundmining.Spectrum._
-import org.scalatest.FunSuite
+import org.scalatest.funsuite.AnyFunSuite
 
 /**
  * TestCode for
  */
-class SpectrumSpec extends FunSuite {
+class SpectrumSpec extends AnyFunSuite {
 
   test("make spectrum") {
     assert(makeSpectrum(110, 2, 5) === Seq[Double](110.0, 330.0, 550.0, 770.0, 990.0))
