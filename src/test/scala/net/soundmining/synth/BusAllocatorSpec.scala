@@ -1,8 +1,9 @@
 package net.soundmining.synth
 
-import org.scalatest.{FlatSpec, Matchers}
+import org.scalatest.flatspec.AnyFlatSpec
+import org.scalatest.matchers.should.Matchers
 
-class BusAllocatorSpec extends FlatSpec with Matchers {
+class BusAllocatorSpec extends AnyFlatSpec with Matchers {
 
   "BusAllocator" should "allocate a mono track" in {
     val allocator = BusAllocator(16)

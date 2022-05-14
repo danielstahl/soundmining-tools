@@ -1,12 +1,12 @@
 package net.soundmining
 
 import net.soundmining.Pattern._
-import org.scalatest.FlatSpec
+import org.scalatest.flatspec.AnyFlatSpec
 
 /**
  * Test-class for patterns
  */
-class PatternSpec extends FlatSpec {
+class PatternSpec extends AnyFlatSpec {
 
   behavior of "A atom"
 

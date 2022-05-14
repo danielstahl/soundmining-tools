@@ -1,13 +1,12 @@
 package net.soundmining
 
-import org.scalatest.FlatSpec
-
 import Melody._
+import org.scalatest.flatspec.AnyFlatSpec
 
 /**
  * Tests for melody
  */
-class MelodySpec extends FlatSpec {
+class MelodySpec extends AnyFlatSpec {
   behavior of "Melody"
 
   it should "transpose its values" in {

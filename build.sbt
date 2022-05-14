@@ -8,10 +8,10 @@ scalaVersion := "2.13.8"
 
 Test / testOptions := Seq(Tests.Filter(s => s.endsWith("Spec")))
 
-libraryDependencies += "org.scalatest" %% "scalatest" % "3.0.8" % "test"
+libraryDependencies += "org.scalatest" %% "scalatest" % "3.2.12" % "test"
 
-libraryDependencies += "com.typesafe.scala-logging" %% "scala-logging" % "3.9.2"
+libraryDependencies += "com.typesafe.scala-logging" %% "scala-logging" % "3.9.4"
 
-libraryDependencies += "ch.qos.logback" % "logback-classic" % "1.1.7"
+libraryDependencies += "ch.qos.logback" % "logback-classic" % "1.2.11"
 
-libraryDependencies += "de.sciss" %% "scalaosc" % "1.2.3" withSources()
+libraryDependencies += "de.sciss" %% "scalaosc" % "1.3.1" withSources()

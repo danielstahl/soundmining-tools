@@ -51,4 +51,13 @@ object Generative {
       current
     }
   }
+
+  def evenMarkovChain[T](values: Seq[T], startValue: T): MarkovChain[T] = {
+    val rate = 1.0 / (values.size - 1)
+    val nodes = values.map(value => (value, values.filter(_ != value).map((_, rate)))).toMap
+    MarkovChain(nodes, startValue)
+  }
+
+  def randomRange(min: Double, max: Double)(implicit random: Random): Double =
+    min + (max - min) * random.nextDouble()
 }
