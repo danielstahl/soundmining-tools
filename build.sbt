@@ -16,8 +16,11 @@ libraryDependencies += "ch.qos.logback" % "logback-classic" % "1.2.11"
 
 libraryDependencies += "de.sciss" %% "scalaosc" % "1.3.1" withSources()
 
+ThisBuild / versionScheme := Some("early-semver")
+
 // publish to github packages settings
 publishTo := Some("GitHub danielstahl Apache Maven Packages" at "https://maven.pkg.github.com/danielstahl/soundmingin-tools")
+publishMavenStyle := true
 credentials += Credentials(
   "GitHub Package Registry",
   "maven.pkg.github.com",
