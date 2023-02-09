@@ -50,20 +50,30 @@ case class SuperColliderScore() {
   }
 
   def messageToString(deltaTime: Double, message: Message): String = {
+    val isArrayArg = message.args.exists {
+      case arg@(_: Iterable[Any]) =>
+        arg.size > 10
+      case _ => false
+    }
+
     val args = message.args
       .map {
         case arg@(_: String) =>
-          if (message.name == "/d_loadDir") {
+          if (message.name == "/d_loadDir" || message.name == "/b_allocRead") {
             s"'$arg'"
           } else {
             s"\\$arg"
           }
-        case arg@(_: List[Any]) =>
+        case arg@(_: Iterable[Any]) =>
           s"[${arg.mkString(", ")}]"
-
         case arg =>
           arg
       }
-    s"[$deltaTime, [${message.name.replace('/', '\\')}, ${args.mkString(", ")}]]"
+    if(isArrayArg) {
+      s"[$deltaTime, [${message.name.replace('/', '\\')}, ${args.mkString(", ")}].asOSCArgArray]"
+    } else {
+      s"[$deltaTime, [${message.name.replace('/', '\\')}, ${args.mkString(", ")}]]"
+    }
+
   }
 }

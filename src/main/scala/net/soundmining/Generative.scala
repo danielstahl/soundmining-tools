@@ -60,4 +60,19 @@ object Generative {
 
   def randomRange(min: Double, max: Double)(implicit random: Random): Double =
     min + (max - min) * random.nextDouble()
+
+  def randomIntRange(min: Int, max: Int)(implicit random: Random): Int =
+    min + random.nextInt((max - min) + 1)
+
+  def pickItems[T](items: Seq[T], size: Int)(implicit random: Random): Seq[T] =
+    random.shuffle(items).take(size)
+
+  def walkOverTime(currentPosition: Double, startPosition: Double, endPosition: Double, startRange: (Double, Double), endRange: (Double, Double))(implicit random: Random): Double = {
+    val currentRelativePosition = (currentPosition - startPosition) / (endPosition - startPosition)
+    val (currentMin, currentMax) = (startRange, endRange) match {
+      case ((startMin, startMax), (endMin, endMax)) =>
+        ((endMin - startMin) * currentRelativePosition, (endMax - startMax) * currentRelativePosition)
+    }
+    randomRange(currentMin, currentMax)
+  }
 }

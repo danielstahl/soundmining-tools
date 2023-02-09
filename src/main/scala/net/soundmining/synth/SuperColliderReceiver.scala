@@ -46,20 +46,32 @@ trait SuperColliderReply {
 case class PatchPlayback(patch: Patch = EmptyPatch, client: SuperColliderClient) extends SuperColliderReply {
   val STATIC_MIDI_DELAY_TIME = 1900
 
-  override def noteOn(key: Int, velocity: Int, device: String): Unit = {
+  def currentStartTime(): Double = {
     if (client.clockTime <= 0) client.resetClock()
-    val start = (System.currentTimeMillis() - (client.clockTime + STATIC_MIDI_DELAY_TIME)) / 1000.0
-    patch.noteHandle(start, key, velocity, device)
+    (System.currentTimeMillis() - (client.clockTime + STATIC_MIDI_DELAY_TIME)) / 1000.0
+  }
+
+  override def noteOn(key: Int, velocity: Int, device: String): Unit = {
+    patch.noteHandle(currentStartTime(), key, velocity, device)
+  }
+
+  override def cc(value: Int, control: Int, device: String): Unit = {
+    patch.ccHandle(value, control, device)
   }
 }
 
 trait Patch {
   def noteHandle(start: Double, key: Int, velocity: Int, device: String): Unit
+  def ccHandle(value: Int, control: Int, device: String): Unit = {}
 }
 
 object EmptyPatch extends Patch{
   override def noteHandle(start: Double, key: Int, velocity: Int, device: String): Unit = {
     println(s"Note handle start $start key $key velocity $velocity device $device")
+  }
+
+  override def ccHandle(value: Int, control: Int, device: String): Unit = {
+    println(s"cc handle control $control value $value device $device")
   }
 }
 

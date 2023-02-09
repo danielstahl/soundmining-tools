@@ -4,12 +4,12 @@ import de.sciss.osc._
 import de.sciss.osc.Implicits._
 
 
-case class SuperColliderClient() {
+case class SuperColliderClient(dumpServer: Boolean = false) {
     import SuperColliderClient._
     val DELAY: Long = 2000
-    val DUMP_SERVER: Boolean = true
     var client: UDP.Client = _
     var clockTime: Long = _
+    val bufferedPlayback: BufferedPlayback = BufferedPlayback(this)
 
     def start(): Unit = {
         val cfg = UDP.Config()
@@ -17,12 +17,14 @@ case class SuperColliderClient() {
         this.client = UDP.Client("127.0.0.1" -> 57110, cfg)
         client.connect()
         client.action = reply
-        if(DUMP_SERVER) send(dumpOSC(true))
+        if(dumpServer) send(dumpOSC(true))
         send(scNotify(true))
         resetClock()
+        bufferedPlayback.start()
     }
 
     def resetClock(): Unit = {
+        bufferedPlayback.reset()
         clockTime = System.currentTimeMillis()
         BusAllocator.audio.resetAllocations()
         BusAllocator.control.resetAllocations()
@@ -31,11 +33,16 @@ case class SuperColliderClient() {
     def send(packet: Packet): Unit = 
         client ! packet
         
-    def stop(): Unit =
+    def stop(): Unit = {
+        bufferedPlayback.stop()
         client.close()
+    }
 
     def reply(packet: Packet): Unit =
         println(packet)
+
+    def playBundle(deltaTime: Long, messages: Seq[Seq[Any]]): Unit =
+        bufferedPlayback.playBundle(deltaTime, messages)
 
     def bundle(deltaTime: Long, packets: Packet*): Bundle =
         Bundle.millis(clockTime + DELAY + deltaTime, packets: _*)
